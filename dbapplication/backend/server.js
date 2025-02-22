@@ -36,15 +36,6 @@ app.get("/users", (req, res) => {
     });
 });
 
-app.get("/users", (req, res) => {
-    db.all("SELECT * FROM items", [], (err, rows) => {
-        if (err) {
-            return res.status(400).json({ error: err.message });
-        }
-        res.json({ users: rows });
-    });
-});
-
 app.put("/users/:id", (req, res) => {
     const { id } = req.params;
     const { name, email } = req.body;
@@ -79,5 +70,3 @@ app.delete("/users/:id", (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
-
-
