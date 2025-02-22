@@ -35,7 +35,7 @@ const MainContent = () => {
     <main>
       <Section id="Home" title="Welcome to My Website">
         <p>Welcome to my personal website.</p>
-      </Section>
+        </Section>
 
       <Section id="About" title="About Me">
         <p>This section is about me.</p>

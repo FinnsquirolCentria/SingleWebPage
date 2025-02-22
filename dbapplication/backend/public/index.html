@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test SQLite Database</title>
+</head>
+<body>
+    <h1>Test SQLite Database</h1>
+
+    <h2>Add User</h2>
+    <form id="addUserForm">
+        <input type="text" id="name" placeholder="Name" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <button type="submit">Add User</button>
+    </form>
+
+    <h2>Users</h2>
+    <ul id="userList"></ul>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchUsers();
+        });
+
+        document.getElementById('addUserForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            fetch('/users', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email })
+            }).then(response => response.json())
+              .then(data => {
+                  console.log(data);
+                  fetchUsers(); // Refresh the user list after adding a new user
+              })
+              .catch(error => console.error('Error:', error));
+        });
+
+        function fetchUsers() {
+            fetch('/users')
+                .then(response => response.json())
+                .then(data => {
+                    const userList = document.getElementById('userList');
+                    userList.innerHTML = '';
+                    data.users.forEach(user => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = `ID: ${user.id}, Name: ${user.name}, Email: ${user.email}`;
+                        
+                        const deleteButton = document.createElement('button');
+                        deleteButton.textContent = 'Delete';
+                        deleteButton.onclick = function() {
+                            deleteUser(user.id);
+                        };
+                        listItem.appendChild(deleteButton);
+                        
+                        userList.appendChild(listItem);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function deleteUser(id) {
+            fetch(`/users/${id}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                fetchUsers(); // Refresh the user list after deleting a user
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
