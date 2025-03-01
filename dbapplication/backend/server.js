@@ -1,9 +1,11 @@
 const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
+const cors = require("cors");
 
 const app = express();
-const PORT = 3000;
+const PORT = 5000;
 
+app.use(cors()); // Add this line to enable CORS
 app.use(express.json());
 app.use(express.static('public'));
 
