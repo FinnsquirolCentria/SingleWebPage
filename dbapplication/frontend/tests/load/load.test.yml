@@ -1,9 +1,27 @@
 config:
-  target: 'http://localhost:5000'
+  target: http://localhost:5000 # Target your backend server
   phases:
-    - duration: 60
-      arrivalRate: 5
+    - duration: 60   # Run the test for 60 seconds
+      arrivalRate: 5 # Send 5 requests per second
+  defaults:
+    headers:
+      Content-Type: application/json
+
 scenarios:
-  - flow:
+  - name: Test Users Endpoint
+    flow:
       - get:
-          url: '/api/items'
+          url: /users # Backend endpoint to fetch users
+
+  - name: Test Add User
+    flow:
+      - post:
+          url: /users
+          body:
+            name: "Test User"
+            email: "testuser@example.com"
+
+  - name: Test Frontend Page Load
+    flow:
+      - get:
+          url: http://localhost:3000 # Target the frontend home page
