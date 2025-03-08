@@ -5,7 +5,7 @@ const cors = require("cors");
 const app = express();
 const PORT = 5000;
 
-app.use(cors()); // Add this line to enable CORS
+app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
@@ -69,6 +69,12 @@ app.delete("/users/:id", (req, res) => {
     );
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+    });
+}
+
+
+module.exports = app;
